@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Violence Awareness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c, #2c0c0c, #5c1c1c);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M0,0 L100,100" stroke="rgba(255,0,0,0.1)" stroke-width="1"/></svg>');
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(20, 0, 0, 0.85);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ff3333;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7), 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 2px;
+            position: relative;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff3333, transparent);
+        }
+        
+        .intro {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            color: #e0e0e0;
+            padding: 0 1rem;
+        }
+        
+        .image-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 50, 50, 0.4);
+        }
+        
+        .image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.8s ease;
+        }
+        
+        .input-section {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(30, 0, 0, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        
+        .input-label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #ff6b6b;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+        
+        .input-box {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #ff3333;
+            border-radius: 8px;
+            background: rgba(10, 0, 0, 0.8);
+            color: white;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+        }
+        
+        .input-box:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        
+        .input-box::placeholder {
+            color: rgba(255, 200, 200, 0.6);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #e60000);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 0, 0, 0.6);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .submit-btn:hover::after {
+            left: 100%;
+        }
+        
+        .word-count {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #ffcc00;
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+        
+        .word {
+            position: absolute;
+            font-size: 1.1rem;
+            color: #ff3333;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            opacity: 0;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: #ffcc00;
+            opacity: 0;
+            transition: opacity 1.5s;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            border-left: 4px solid #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            z-index: 20;
+            width: 80%;
+            text-align: center;
+        }
+        
+        .fragment {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-size: cover;
+            opacity: 0;
+            z-index: 5;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 0, 0, 0.3);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff3333, #ff0000);
+            width: 0%;
+            transition: width 0.5s;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+        
+        .warning {
+            color: #ff9900;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes throw {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+            50% { transform: translateY(80px) rotate(10deg) scale(1.1); opacity: 0.8; }
+            100% { transform: translateY(150px) rotate(20deg) scale(1.2); opacity: 0; }
+        }
+        
+        @keyframes break {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.1) rotate(2deg); opacity: 0.7; }
+            100% { transform: scale(1.3) rotate(5deg); opacity: 0; }
+        }
+        
+        @keyframes fragmentFly {
+            0% { 
+                transform: translate(0, 0) rotate(0deg) scale(1); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: 
+                    translate(
+                        calc(var(--tx) * 100px), 
+                        calc(var(--ty) * 100px)
+                    ) 
+                    rotate(var(--r)) scale(0.8); 
+                opacity: 0; 
+            }
+        }
+        
+        @keyframes tear {
+            0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+            50% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+            100% { clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 50% 50%, 0 100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Violence Awareness</h1>
+        <p class="intro">Share your understanding of violence. When you enter enough thoughts, this image will shatter, revealing the real harm behind violence.</p>
+        
+        <div class="image-container">
+            <img id="initial-image" class="image" src="./img/bl.jpg" alt="Initial Image">
+            <img id="final-image" class="image hidden" src="./img/bls.jpg" alt="Final Image">
+            <div class="message" id="message">
+                The scars left by violence are deeper than we imagine...
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <label for="violence-input" class="input-label">What do you think violence is?</label>
+            <input type="text" id="violence-input" class="input-box" placeholder="Enter your thoughts on violence...">
+            <button id="submit-btn" class="submit-btn">Submit</button>
+            <div class="word-count">Submitted: <span id="count">0</span>/5</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="warning">Note: After submitting 5 thoughts, the image will shatter and reveal the harm behind violence</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('violence-input');
+            const submitBtn = document.getElementById('submit-btn');
+            const countDisplay = document.getElementById('count');
+            const progress = document.getElementById('progress');
+            const initialImage = document.getElementById('initial-image');
+            const finalImage = document.getElementById('final-image');
+            const message = document.getElementById('message');
+            
+            let wordCount = 0;
+            const requiredCount = 5;
+            
+            submitBtn.addEventListener('click', addWord);
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addWord();
+                }
+            });
+            
+            function addWord() {
+                const word = input.value.trim();
+                if (word === '') return;
+                
+                // 创建文字元素
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word';
+                wordElement.textContent = word;
+                
+                // 随机位置
+                const x = Math.random() * 80 + 10; // 10% to 90%
+                wordElement.style.left = `${x}%`;
+                wordElement.style.top = '10%';
+                
+                // 添加到图片容器
+                document.querySelector('.image-container').appendChild(wordElement);
+                
+                // 动画效果
+                setTimeout(() => {
+                    wordElement.style.animation = 'throw 1.5s forwards';
+                }, 100);
+                
+                // 更新计数
+                wordCount++;
+                countDisplay.textContent = wordCount;
+                progress.style.width = `${(wordCount / requiredCount) * 100}%`;
+                
+                // 清除输入框
+                input.value = '';
+                
+                // 检查是否达到所需数量
+                if (wordCount >= requiredCount) {
+                    // 开始破碎效果
+                    setTimeout(() => {
+                        createFragments();
+                        // 添加撕裂效果
+                        initialImage.style.animation = 'tear 2s forwards, break 2s forwards';
+                    }, 500);
+                    
+                    // 显示最终图片和消息
+                    setTimeout(() => {
+                        initialImage.classList.add('hidden');
+                        finalImage.classList.remove('hidden');
+                        finalImage.style.animation = 'fadeIn 2s forwards';
+                        message.style.opacity = 1;
+                    }, 2500);
+                    
+                    // 禁用输入
+                    input.disabled = true;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Completed';
+                    submitBtn.style.background = 'linear-gradient(135deg, #666, #444)';
+                    submitBtn.style.boxShadow = 'none';
+                }
+            }
+            
+            function createFragments() {
+                const container = document.querySelector('.image-container');
+                const rect = initialImage.getBoundingClientRect();
+                const fragmentCount = 20;
+                
+                for (let i = 0; i < fragmentCount; i++) {
+                    const fragment = document.createElement('div');
+                    fragment.className = 'fragment';
+                    
+                    // 设置碎片位置和大小
+                    const left = Math.random() * rect.width;
+                    const top = Math.random() * rect.height;
+                    const size = 30 + Math.random() * 50;
+                    
+                    fragment.style.width = `${size}px`;
+                    fragment.style.height = `${size}px`;
+                    fragment.style.left = `${left}px`;
+                    fragment.style.top = `${top}px`;
+                    
+                    // 设置碎片背景为图片的一部分
+                    const bgX = (left / rect.width) * 100;
+                    const bgY = (top / rect.height) * 100;
+                    fragment.style.backgroundImage = `url(${initialImage.src})`;
+                    fragment.style.backgroundPosition = `${bgX}% ${bgY}%`;
+                    fragment.style.backgroundSize = `${rect.width}px ${rect.height}px`;
+                    
+                    // 设置动画参数
+                    fragment.style.setProperty('--tx', (Math.random() - 0.5) * 2);
+                    fragment.style.setProperty('--ty', (Math.random() - 0.5) * 2);
+                    fragment.style.setProperty('--r', `${Math.random() * 360}deg`);
+                    
+                    // 添加到容器
+                    container.appendChild(fragment);
+                    
+                    // 启动动画
+                    setTimeout(() => {
+                        fragment.style.animation = `fragmentFly 1.5s forwards`;
+                    }, 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
